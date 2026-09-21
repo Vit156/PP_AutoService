@@ -6,7 +6,8 @@ public enum Specialization {
     SUSPENSION_REPAIR("Suspension Repair"),
     AIR_CONDITIONING_REPAIR("Air Conditioning Repair"),
     BODYWORK_REPAIR("Bodywork Repair"),
-    EXHAUST_SYSTEM_REPAIR("Exhaust System Repair");
+    EXHAUST_SYSTEM_REPAIR("Exhaust System Repair"),
+    DIAGNOSTIC("Diagnostic");
 
     private final String specializationName;
 
