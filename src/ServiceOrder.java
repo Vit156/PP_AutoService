@@ -34,7 +34,7 @@ public class ServiceOrder {
         if (!mechanic.isAvailable()) {
             throw new IllegalStateException("Mechanic is not available");
         }
-        if (this.currentStatus != OrderStatus.CREATED && this.currentStatus != OrderStatus.DIAGNOSED) {
+        if (this.currentStatus != OrderStatus.CREATED && this.currentStatus != OrderStatus.DIAGNOSED && this.currentStatus != OrderStatus.APPROVED) {
             throw new IllegalStateException("Cannot assign mechanic to order with status: " + this.currentStatus.getOrderStatusName());
         }
         this.assignedMechanic = mechanic;

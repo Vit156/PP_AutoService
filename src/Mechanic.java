@@ -26,12 +26,12 @@ public class Mechanic {
         return mechanicId;
     }
 
-    public String getMechanicName() {
-        return mechanicName;
-    }
-
-    public Specialization getMechanicSpecialization() {
-        return mechanicSpecialization;
-    }
+//    public String getMechanicName() {
+//        return mechanicName;
+//    }
+//
+//    public Specialization getMechanicSpecialization() {
+//        return mechanicSpecialization;
+//    }
 
 }

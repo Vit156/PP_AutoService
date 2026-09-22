@@ -29,23 +29,23 @@ public class Car {
         this.carOwner = carOwner;
     }
 
-    public Client getCarOwner() {
-        return carOwner;
-    }
+//    public Client getCarOwner() {
+//        return carOwner;
+//    }
 
     public String getVinCode() {
         return vinCode;
     }
 
-    public String getCarModel() {
-        return carModel;
-    }
-
-    public String getCarBrand() {
-        return carBrand;
-    }
-
-    public int getCarYear() {
-        return carYear;
-    }
+//    public String getCarModel() {
+//        return carModel;
+//    }
+//
+//    public String getCarBrand() {
+//        return carBrand;
+//    }
+//
+//    public int getCarYear() {
+//        return carYear;
+//    }
 }

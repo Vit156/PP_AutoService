@@ -43,23 +43,23 @@ public class Job {
         return jobCost.add(detailCost);
     }
 
-    public int getJobId() {
-        return jobId;
-    }
-
-    public String getJobName() {
-        return jobName;
-    }
-
-    public JobStatus getJobStatus() {
-        return jobStatus;
-    }
-
-    public BigDecimal getJobCost() {
-        return jobCost;
-    }
-
-    public BigDecimal getDetailCost() {
-        return detailCost;
-    }
+//    public int getJobId() {
+//        return jobId;
+//    }
+//
+//    public String getJobName() {
+//        return jobName;
+//    }
+//
+//    public JobStatus getJobStatus() {
+//        return jobStatus;
+//    }
+//
+//    public BigDecimal getJobCost() {
+//        return jobCost;
+//    }
+//
+//    public BigDecimal getDetailCost() {
+//        return detailCost;
+//    }
 }

@@ -11,8 +11,8 @@ public class Client {
         return clientId;
     }
 
-    public String getClientName() {
-        return clientName;
-    }
+//    public String getClientName() {
+//        return clientName;
+//    }
 }
 
