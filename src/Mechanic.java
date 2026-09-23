@@ -1,13 +1,15 @@
+import java.util.List;
+
 public class Mechanic {
-    private int mechanicId;
-    private String mechanicName;
-    private Specialization mechanicSpecialization;
+    private int Id;
+    private String Name;
+    private List<Specialization> Specialization;
     private boolean isAvailable;
 
-    public Mechanic(int mechanicId, String mechanicName, Specialization mechanicSpecialization) {
-        this.mechanicId = mechanicId;
-        this.mechanicName = mechanicName;
-        this.mechanicSpecialization = mechanicSpecialization;
+    public Mechanic(int id, String name, List<Specialization> specialization) {
+        this.Id = id;
+        this.Name = name;
+        this.Specialization = specialization;
         this.isAvailable = true;
     }
     public void assignToTask() {
@@ -23,15 +25,15 @@ public class Mechanic {
     }
 
     public int getMechanicId() {
-        return mechanicId;
+        return Id;
     }
 
-//    public String getMechanicName() {
-//        return mechanicName;
-//    }
-//
-//    public Specialization getMechanicSpecialization() {
-//        return mechanicSpecialization;
-//    }
+    public String getMechanicName() {
+        return Name;
+    }
+
+    public List<Specialization> getMechanicSpecialization() {
+        return Specialization;
+    }
 
 }

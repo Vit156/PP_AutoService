@@ -99,12 +99,15 @@ public class ServiceOrder {
     public Car getCar() {
         return car;
     }
-    public  Mechanic getAssignedMechanic() {
+
+    public Mechanic getAssignedMechanic() {
         return assignedMechanic;
     }
+
     public List<Job> getJobs() {
         return new ArrayList<>(jobs);
     }
+
     public OrderStatus getStatus() {
         return currentStatus;
     }

@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.util.Collections;
 
 public class CarServiceDemo {
     public static void main(String[] args) {
@@ -10,7 +11,7 @@ public class CarServiceDemo {
         System.out.println("1 scenario: Successful registration of client and car");
         Client client = new Client(1, "Vitalik");
         Car car = new Car("VIN123456789", "Mustang", "Ford", 2021, client);
-        Mechanic mechanic = new Mechanic(1, "Taras", Specialization.ENGINE_REPAIR);
+        Mechanic mechanic = new Mechanic(1, "Taras", Collections.singletonList(Specialization.ENGINE_REPAIR));
 
         service.registerClient(client);
         service.registerCar(car);
@@ -26,8 +27,8 @@ public class CarServiceDemo {
         order1.diagnoseOrder();
         System.out.println("Status after diagnosis: " + order1.getStatus().getOrderStatusName());
 
-        Job job1 = new Job(1, "Oil Change", new BigDecimal("500"), new BigDecimal("1000"));
-        Job job2 = new Job(2, "Filter Replacement", new BigDecimal("300"), new BigDecimal("600"));
+        Job job1 = new Job(1L, "Oil Change", new BigDecimal("500"), new BigDecimal("1000"));
+        Job job2 = new Job(2L, "Filter Replacement", new BigDecimal("300"), new BigDecimal("600"));
         order1.addJob(job1);
         order1.addJob(job2);
 
@@ -64,7 +65,7 @@ public class CarServiceDemo {
         System.out.println("--- Scenario 5: Attempt to start order without mechanic ---");
         ServiceOrder noMechanicOrder = new ServiceOrder(car);
         noMechanicOrder.diagnoseOrder();
-        noMechanicOrder.addJob(new Job(3, "Test", new BigDecimal("100"), BigDecimal.ZERO));
+        noMechanicOrder.addJob(new Job(3L, "Test", new BigDecimal("100"), BigDecimal.ZERO));
         noMechanicOrder.approveOrder();
         try {
             noMechanicOrder.startProgress(); // Механіка не призначили, має впасти
@@ -80,7 +81,7 @@ public class CarServiceDemo {
         // Спочатку завантажимо механіка роботою
         ServiceOrder activeOrder = new ServiceOrder(car);
         activeOrder.diagnoseOrder();
-        activeOrder.addJob(new Job(4, "Repair", new BigDecimal("1000"), BigDecimal.ZERO));
+        activeOrder.addJob(new Job(4L, "Repair", new BigDecimal("1000"), BigDecimal.ZERO));
         activeOrder.approveOrder();
         activeOrder.assignMechanic(mechanic); // Механік тепер ЗАЙНЯТИЙ (isAvailable = false)
 
@@ -99,7 +100,7 @@ public class CarServiceDemo {
         System.out.println("--- Scenario 7: Attempt to modify a completed order ---");
         try {
             // order1 з першого сценарію вже має статус COMPLETED
-            order1.addJob(new Job(5, "Late work", new BigDecimal("500"), BigDecimal.ZERO));
+            order1.addJob(new Job(5L, "Late work", new BigDecimal("500"), BigDecimal.ZERO));
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }

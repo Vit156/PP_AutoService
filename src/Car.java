@@ -1,51 +1,53 @@
+import java.time.LocalDate;
+
 public class Car {
     private String vinCode;
-    private String carModel;
-    private String carBrand;
-    private int carYear;
-    private Client carOwner;
+    private String model;
+    private String brand;
+    private int year;
+    private Client owner;
 
-    public Car(String vinCode, String carModel, String carBrand, int carYear, Client carOwner) {
-        if (vinCode == null || vinCode.trim().isEmpty()) {
+    public Car(String vinCode, String model, String brand, int year, Client owner) {
+        if (vinCode == null || vinCode.isBlank()) {
             throw new IllegalArgumentException("VIN code cannot be null or empty");
         }
-        if (carModel == null || carModel.trim().isEmpty()) {
+        if (model == null || model.isBlank()) {
             throw new IllegalArgumentException("Car model cannot be null or empty");
         }
-        if (carBrand == null || carBrand.trim().isEmpty()) {
+        if (brand == null || brand.isBlank()) {
             throw new IllegalArgumentException("Car brand cannot be null or empty");
         }
-        if (carYear < 1886 || carYear > 2023) {
+        if (year < 1886 || year > LocalDate.now().getYear()) {
             throw new IllegalArgumentException("Invalid car year");
         }
-        if (carOwner == null) {
+        if (owner == null) {
             throw new IllegalArgumentException("Car owner cannot be null");
         }
 
         this.vinCode = vinCode;
-        this.carModel = carModel;
-        this.carBrand = carBrand;
-        this.carYear = carYear;
-        this.carOwner = carOwner;
+        this.model = model;
+        this.brand = brand;
+        this.year = year;
+        this.owner = owner;
     }
 
-//    public Client getCarOwner() {
-//        return carOwner;
-//    }
+    public Client getOwner() {
+        return owner;
+    }
 
     public String getVinCode() {
         return vinCode;
     }
 
-//    public String getCarModel() {
-//        return carModel;
-//    }
-//
-//    public String getCarBrand() {
-//        return carBrand;
-//    }
-//
-//    public int getCarYear() {
-//        return carYear;
-//    }
+    public String getModel() {
+        return model;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public int getYear() {
+        return year;
+    }
 }

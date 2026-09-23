@@ -15,8 +15,8 @@ public class AutoService {
     }
 
     public void registerCar(Car car) {
-        for (Car c : this.cars) {
-            if (c.getVinCode().equals(car.getVinCode())) {
+        for (Car registeredCar : this.cars) {
+            if (registeredCar.getVinCode().equals(car.getVinCode())) {
                 throw new IllegalStateException("Car already registered");
             }
         }
@@ -30,8 +30,8 @@ public class AutoService {
         if (client == null) {
             throw new IllegalArgumentException("Client cannot be null");
         }
-        for (Client cl : this.clients) {
-            if (cl.getClientId() == client.getClientId()) {
+        for (Client registeredClient : this.clients) {
+            if (registeredClient.getId() == client.getId()) {
                 throw new IllegalStateException("Client already registered");
             }
         }
@@ -43,8 +43,8 @@ public class AutoService {
         if (mechanic == null) {
             throw new IllegalArgumentException("Mechanic cannot be null");
         }
-        for (Mechanic m : this.mechanics) {
-            if (m.getMechanicId() == mechanic.getMechanicId()) {
+        for (Mechanic registeredMechanic : this.mechanics) {
+            if (registeredMechanic.getMechanicId() == mechanic.getMechanicId()) {
                 throw new IllegalStateException("Mechanic already registered");
             }
         }
@@ -56,8 +56,8 @@ public class AutoService {
         if (serviceOrder == null) {
             throw new IllegalArgumentException("Service order cannot be null");
         }
-        for (ServiceOrder so : this.orders) {
-            if (so.equals(serviceOrder)) {
+        for (ServiceOrder registeredOrder : this.orders) {
+            if (registeredOrder.equals(serviceOrder)) {
                 throw new IllegalStateException("Service order already registered");
             }
         }

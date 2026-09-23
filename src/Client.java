@@ -1,18 +1,18 @@
 public class Client {
-    private int clientId;
-    private String clientName;
+    private int id;
+    private String name;
 
-    public Client(int clientId, String clientName) {
-        this.clientId = clientId;
-        this.clientName = clientName;
+    public Client(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public int getClientId() {
-        return clientId;
+    public int getId() {
+        return id;
     }
 
-//    public String getClientName() {
-//        return clientName;
-//    }
+    public String getName() {
+        return name;
+    }
 }
 

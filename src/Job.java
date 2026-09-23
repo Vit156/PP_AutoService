@@ -1,65 +1,66 @@
 import java.math.BigDecimal;
 
 public class Job {
-    private int jobId;
-    private String jobName;
-    private JobStatus jobStatus;
-    private BigDecimal jobCost;
-    private BigDecimal detailCost;
+    private Long id;
+    private String name;
+    private JobStatus status;
+    private Specialization specialization;
+    private BigDecimal workCost;
+    private BigDecimal partsCost;
 
-    public Job(int jobId, String jobName, BigDecimal jobCost, BigDecimal detailCost) {
-        if (jobId <= 0) {
+    public Job(Long id, String jobName, BigDecimal workCost, BigDecimal partsCost) {
+        if (id.compareTo(0L) <= 0) {
             throw new IllegalArgumentException("Job ID must be a positive integer");
         }
 
-        if (jobName == null || jobName.trim().isEmpty()) {
+        if (jobName == null || jobName.isBlank()) {
             throw new IllegalArgumentException("Job name cannot be null or empty");
         }
 
-        if (jobCost == null || jobCost.compareTo(BigDecimal.ZERO) < 0) {
+        if (workCost == null || workCost.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Job cost cannot be null or negative");
         }
 
-        if (detailCost == null || detailCost.compareTo(BigDecimal.ZERO) < 0) {
+        if (partsCost == null || partsCost.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Detail cost cannot be null or negative");
         }
 
-        this.jobId = jobId;
-        this.jobName = jobName;
-        this.jobStatus = JobStatus.PENDING;
-        this.jobCost = jobCost;
-        this.detailCost = detailCost;
+        this.id = id;
+        this.name = jobName;
+        this.status = JobStatus.PENDING;
+        this.workCost = workCost;
+        this.partsCost = partsCost;
     }
 
     public void markCompleted() {
-        this.jobStatus = JobStatus.COMPLETED;
+        this.status = JobStatus.COMPLETED;
     }
 
     public boolean isCompleted() {
-        return this.jobStatus == JobStatus.COMPLETED;
+        return this.status == JobStatus.COMPLETED;
     }
 
     public BigDecimal getTotalCost() {
-        return jobCost.add(detailCost);
+        return workCost.add(partsCost);
     }
 
-//    public int getJobId() {
-//        return jobId;
-//    }
-//
-//    public String getJobName() {
-//        return jobName;
-//    }
-//
-//    public JobStatus getJobStatus() {
-//        return jobStatus;
-//    }
-//
-//    public BigDecimal getJobCost() {
-//        return jobCost;
-//    }
-//
-//    public BigDecimal getDetailCost() {
-//        return detailCost;
-//    }
+    public Long getId() {
+        return id;
+    }
+
+    public String getJobName() {
+        return name;
+    }
+
+    public JobStatus getJobStatus() {
+        return status;
+    }
+
+    public BigDecimal getWorkCost() {
+        return workCost;
+    }
+
+    public BigDecimal getPartsCost() {
+        return partsCost;
+    }
 }
