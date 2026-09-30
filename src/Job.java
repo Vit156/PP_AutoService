@@ -8,13 +8,17 @@ public class Job {
     private BigDecimal workCost;
     private BigDecimal partsCost;
 
-    public Job(Long id, String jobName, BigDecimal workCost, BigDecimal partsCost) {
+    public Job(Long id, String name, Specialization specialization, BigDecimal workCost, BigDecimal partsCost) {
         if (id.compareTo(0L) <= 0) {
             throw new IllegalArgumentException("Job ID must be a positive integer");
         }
 
-        if (jobName == null || jobName.isBlank()) {
+        if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Job name cannot be null or empty");
+        }
+
+        if (specialization == null) {
+            throw new IllegalArgumentException("Job specialization cannot be null");
         }
 
         if (workCost == null || workCost.compareTo(BigDecimal.ZERO) < 0) {
@@ -22,11 +26,12 @@ public class Job {
         }
 
         if (partsCost == null || partsCost.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Detail cost cannot be null or negative");
+            throw new IllegalArgumentException("Parts cost cannot be null or negative");
         }
 
         this.id = id;
-        this.name = jobName;
+        this.name = name;
+        this.specialization = specialization;
         this.status = JobStatus.PENDING;
         this.workCost = workCost;
         this.partsCost = partsCost;
@@ -48,12 +53,16 @@ public class Job {
         return id;
     }
 
-    public String getJobName() {
+    public String getName() {
         return name;
     }
 
-    public JobStatus getJobStatus() {
+    public JobStatus getStatus() {
         return status;
+    }
+
+    public Specialization getSpecialization() {
+        return specialization;
     }
 
     public BigDecimal getWorkCost() {

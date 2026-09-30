@@ -17,22 +17,19 @@ public class Car {
         if (brand == null || brand.isBlank()) {
             throw new IllegalArgumentException("Car brand cannot be null or empty");
         }
-        if (year < 1886 || year > LocalDate.now().getYear()) {
-            throw new IllegalArgumentException("Invalid car year");
-        }
         if (owner == null) {
             throw new IllegalArgumentException("Car owner cannot be null");
         }
+        if (year < 1886 || year > LocalDate.now().getYear()) {
+            throw new IllegalArgumentException("Invalid car year");
+        }
+
 
         this.vinCode = vinCode;
         this.model = model;
         this.brand = brand;
         this.year = year;
         this.owner = owner;
-    }
-
-    public Client getOwner() {
-        return owner;
     }
 
     public String getVinCode() {
@@ -49,5 +46,9 @@ public class Car {
 
     public int getYear() {
         return year;
+    }
+
+    public Client getOwner() {
+        return owner;
     }
 }

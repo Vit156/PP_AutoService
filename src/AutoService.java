@@ -15,14 +15,15 @@ public class AutoService {
     }
 
     public void registerCar(Car car) {
+        if (car == null) {
+            throw new IllegalArgumentException("Car cannot be null");
+        }
         for (Car registeredCar : this.cars) {
             if (registeredCar.getVinCode().equals(car.getVinCode())) {
                 throw new IllegalStateException("Car already registered");
             }
         }
-        if (car == null) {
-            throw new IllegalArgumentException("Car cannot be null");
-        }
+
         this.cars.add(car);
     }
 
@@ -44,7 +45,7 @@ public class AutoService {
             throw new IllegalArgumentException("Mechanic cannot be null");
         }
         for (Mechanic registeredMechanic : this.mechanics) {
-            if (registeredMechanic.getMechanicId() == mechanic.getMechanicId()) {
+            if (registeredMechanic.getId() == mechanic.getId()) {
                 throw new IllegalStateException("Mechanic already registered");
             }
         }

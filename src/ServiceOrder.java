@@ -12,6 +12,7 @@ public class ServiceOrder {
         if (car == null) {
             throw new IllegalArgumentException("Car cannot be null");
         }
+
         this.car = car;
         this.jobs = new ArrayList<>();
         this.currentStatus = OrderStatus.CREATED;
@@ -21,9 +22,11 @@ public class ServiceOrder {
         if (job == null) {
             throw new IllegalArgumentException("Job cannot be null");
         }
+
         if (this.currentStatus != OrderStatus.CREATED && this.currentStatus != OrderStatus.DIAGNOSED) {
             throw new IllegalStateException("Cannot add job to order with status: " + this.currentStatus.getOrderStatusName());
         }
+
         this.jobs.add(job);
     }
 
@@ -31,13 +34,23 @@ public class ServiceOrder {
         if (mechanic == null) {
             throw new IllegalArgumentException("Mechanic cannot be null");
         }
+
+        for (Job currentJob : this.jobs) {
+            if (!mechanic.hasSpecialization(currentJob.getSpecialization())) {
+                throw new IllegalStateException("Mechanic lacks required specialization for job: " + currentJob.getName());
+            }
+        }
+
         if (!mechanic.isAvailable()) {
             throw new IllegalStateException("Mechanic is not available");
         }
+
         if (this.currentStatus != OrderStatus.CREATED && this.currentStatus != OrderStatus.DIAGNOSED && this.currentStatus != OrderStatus.APPROVED) {
             throw new IllegalStateException("Cannot assign mechanic to order with status: " + this.currentStatus.getOrderStatusName());
         }
+
         this.assignedMechanic = mechanic;
+
         this.assignedMechanic.assignToTask();
     }
 
@@ -52,9 +65,11 @@ public class ServiceOrder {
         if (this.currentStatus != OrderStatus.DIAGNOSED) {
             throw new IllegalStateException("Unable to approve order with status: " + this.currentStatus.getOrderStatusName());
         }
+
         if (jobs.isEmpty()) {
             throw new IllegalStateException("Cannot approve order without any jobs");
         }
+
         this.currentStatus = OrderStatus.APPROVED;
     }
 
@@ -94,7 +109,6 @@ public class ServiceOrder {
         }
         return totalCost;
     }
-
 
     public Car getCar() {
         return car;
