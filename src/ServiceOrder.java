@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.math.BigDecimal;
 
 public class ServiceOrder {
-    private Car car;
+    private List<Car> cars;
     private Mechanic assignedMechanic;
     private List<Job> jobs;
     private OrderStatus currentStatus;
@@ -13,9 +13,35 @@ public class ServiceOrder {
             throw new IllegalArgumentException("Car cannot be null");
         }
 
-        this.car = car;
+        this.cars = new ArrayList<>();
+        this.cars.add(car);
         this.jobs = new ArrayList<>();
         this.currentStatus = OrderStatus.CREATED;
+    }
+
+    public void addCars(List<? extends Car> carsToAdd) {
+        if (carsToAdd == null || carsToAdd.isEmpty()) {
+            throw new IllegalArgumentException("Cars cannot be null or empty");
+        }
+        if (this.currentStatus != OrderStatus.CREATED && this.currentStatus != OrderStatus.DIAGNOSED) {
+            throw new IllegalStateException("Cannot add cars to order with status: " + this.currentStatus.getOrderStatusName());
+        }
+
+        List<String> vinCodes = new ArrayList<>();
+        for (Car car : this.cars) {
+            vinCodes.add(car.getVinCode());
+        }
+        for (Car car : carsToAdd) {
+            if (car == null) {
+                throw new IllegalArgumentException("Car cannot be null");
+            }
+            if (vinCodes.contains(car.getVinCode())) {
+                throw new IllegalStateException("Car already belongs to this order");
+            }
+            vinCodes.add(car.getVinCode());
+        }
+
+        this.cars.addAll(carsToAdd);
     }
 
     public void addJob(Job job) {
@@ -111,7 +137,11 @@ public class ServiceOrder {
     }
 
     public Car getCar() {
-        return car;
+        return cars.get(0);
+    }
+
+    public List<Car> getCars() {
+        return new ArrayList<>(cars);
     }
 
     public Mechanic getAssignedMechanic() {
