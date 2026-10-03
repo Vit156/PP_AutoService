@@ -32,6 +32,26 @@ public class Car {
         this.owner = owner;
     }
 
+    public void setVinCode(String vinCode) {
+        this.vinCode = vinCode;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setOwner(Client owner) {
+        this.owner = owner;
+    }
+
     public String getVinCode() {
         return vinCode;
     }

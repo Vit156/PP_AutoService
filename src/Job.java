@@ -45,6 +45,31 @@ public class Job {
         return this.status == JobStatus.COMPLETED;
     }
 
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStatus(JobStatus status) {
+        this.status = status;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
+    }
+
+    public void setWorkCost(BigDecimal workCost) {
+        this.workCost = workCost;
+    }
+
+    public void setPartsCost(BigDecimal partsCost) {
+        this.partsCost = partsCost;
+    }
+
     public BigDecimal getTotalCost() {
         return workCost.add(partsCost);
     }

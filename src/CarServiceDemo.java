@@ -141,9 +141,9 @@ public class CarServiceDemo {
             System.out.println();
         }
 
-        // ---------------------------------------------------------
-        // Add multiple company taxis to one service order
-        // ---------------------------------------------------------
+//         ---------------------------------------------------------
+//         Add multiple company taxis to one service order
+//         ---------------------------------------------------------
         System.out.println("--- Scenario 10: Add multiple taxis to a service order ---");
         Car car2 = new Car("VIN987654321", "Camry", "Toyota", 2022, client1);
         Car car3 = new Car("VIN456789123", "Civic", "Honda", 2023, client1);
