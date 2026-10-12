@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.math.BigDecimal;
 
 public class ServiceOrder {
+    private Long id;
     private List<Car> cars;
     private Mechanic assignedMechanic;
     private List<Job> jobs;
@@ -116,6 +117,7 @@ public class ServiceOrder {
             }
         }
         this.currentStatus = OrderStatus.COMPLETED;
+        getClient().recordCompletedRepair();
         if (this.assignedMechanic != null) {
             this.assignedMechanic.releaseFromTask();
         }
@@ -136,8 +138,20 @@ public class ServiceOrder {
         return totalCost;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Car getCar() {
         return cars.get(0);
+    }
+
+    public Client getClient() {
+        return getCar().getOwner();
     }
 
     public List<Car> getCars() {

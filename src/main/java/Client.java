@@ -1,6 +1,9 @@
+import java.math.BigDecimal;
+
 public class Client {
     private long id;
     private String name;
+    private long completedRepairs;
 
     public Client(long id, String name) {
         this.id = id;
@@ -21,6 +24,13 @@ public class Client {
     public String getName() {
         return name;
     }
-}
 
+    public void recordCompletedRepair() {
+        completedRepairs = Math.incrementExact(completedRepairs);
+    }
+
+    public BigDecimal getLoyaltyDiscountPercentage() {
+        return BigDecimal.valueOf((completedRepairs / 3) * 3);
+    }
+}
 
