@@ -162,6 +162,57 @@ public class CarServiceDemo {
         for (Car car : fleetOrder.getCars()) {
             System.out.println(car.getBrand() + " " + car.getModel() + " (VIN: " + car.getVinCode() + ")");
         }
+        System.out.println();
+
+        // ---------------------------------------------------------
+        // Scenario 11: Lab 2 Layered Architecture (Repository, PriceCalculator, RepairOrderService)
+        // ---------------------------------------------------------
+        System.out.println("--- Scenario 11: Lab 2 Layered Architecture (Repository, PriceCalculator, RepairOrderService) ---");
+
+        // Ініціалізація інфраструктурного шару та сервісу
+        RepairOrderRepository repository = new InMemoryRepairOrderRepository();
+        PriceCalculator priceCalculator = new PriceCalculator();
+        RepairOrderService repairOrderService = new RepairOrderService(repository, priceCalculator);
+
+        // Підготовка нового замовлення (сума > 10000 для перевірки знижки)
+        ServiceOrder registeredOrder = new ServiceOrder(car1);
+        registeredOrder.setId(101L); // Задаємо ID для збереження в репозиторій
+        registeredOrder.diagnoseOrder();
+
+        Job overhaulJob = new Job(10L, "Major Engine Overhaul", Specialization.ENGINE_REPAIR, new BigDecimal("8000"), new BigDecimal("4000"));
+        registeredOrder.addJob(overhaulJob);
+        registeredOrder.approveOrder();
+
+        // Призначаємо вільного механіка (engineMechanic залишився зайнятим у 6-му сценарії)
+        Mechanic lab2Mechanic = new Mechanic(3L, "Petro", Collections.singletonList(Specialization.ENGINE_REPAIR));
+        service.registerMechanic(lab2Mechanic);
+        registeredOrder.assignMechanic(lab2Mechanic);
+        registeredOrder.startProgress();
+
+        overhaulJob.markCompleted();
+
+        // Зберігаємо відкрите замовлення в репозиторій
+        repository.save(registeredOrder);
+        System.out.println("Order #" + registeredOrder.getId() + " saved to repository. Base cost: " + registeredOrder.calculateTotalCost() + " UAH");
+
+        // Викликаємо Application Service, який координує завершення, підрахунок ціни та оновлення в репозиторії
+        BigDecimal commercialPrice = repairOrderService.completeServiceOrder(101L);
+
+        // Перевіряємо, що в репозиторії статус змінився, а ціна розрахована калькулятором
+        ServiceOrder savedOrder = repository.findById(101L).orElseThrow();
+        System.out.println("Order status in repository after service execution: " + savedOrder.getStatus().getOrderStatusName());
+        System.out.println("Commercial price with discounts (loyalty + high cost): " + commercialPrice + " UAH\n");
+
+        // ---------------------------------------------------------
+        // 12. Обробка помилки при зверненні до неіснуючого замовлення через сервіс
+        // ---------------------------------------------------------
+        System.out.println("--- Scenario 12: Attempt to complete non-existent order via RepairOrderService ---");
+        try {
+            repairOrderService.completeServiceOrder(999L);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }
 

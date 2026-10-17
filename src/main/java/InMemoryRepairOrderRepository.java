@@ -1,11 +1,10 @@
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryRepairOrderRepository implements RepairOrderRepository {
-    private final Map<Long, ServiceOrder> orders = new HashMap<>();
+    private final Map<Long, ServiceOrder> orders = new ConcurrentHashMap<>();
 
     @Override
     public void save(ServiceOrder order) {
@@ -21,11 +20,14 @@ public class InMemoryRepairOrderRepository implements RepairOrderRepository {
 
     @Override
     public Optional<ServiceOrder> findById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(orders.get(id));
     }
 
     @Override
     public List<ServiceOrder> findAll() {
-        return new ArrayList<>(orders.values());
+        return List.copyOf(orders.values());
     }
 }
