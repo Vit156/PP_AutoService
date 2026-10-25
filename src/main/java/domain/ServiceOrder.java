@@ -22,7 +22,7 @@ public class ServiceOrder {
         this.currentStatus = OrderStatus.CREATED;
     }
 
-    public void addCars(List<? extends Car> carsToAdd) {
+    public void addCars(List<Car> carsToAdd) {
         if (carsToAdd == null || carsToAdd.isEmpty()) {
             throw new IllegalArgumentException("Cars cannot be null or empty");
         }

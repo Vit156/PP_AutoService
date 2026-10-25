@@ -154,22 +154,32 @@ public class CarServiceDemo {
 //         Add multiple company taxis to one service order
 //         ---------------------------------------------------------
         System.out.println("--- Scenario 10: Add multiple taxis to a service order ---");
-        Car car2 = new Car("VIN987654321", "Camry", "Toyota", 2022, client1);
-        Car car3 = new Car("VIN456789123", "Civic", "Honda", 2023, client1);
-        service.registerCar(car2);
-        service.registerCar(car3);
+        Taxi taxi1 = new Taxi("TAXI-111", "Camry", "Toyota", 2022, client1, "Uklon");
+        Taxi taxi2 = new Taxi("TAXI-222", "Civic", "Honda", 2023, client1, "Bolt");
+        Taxi taxi3 = new Taxi("TAXI-333", "Octavia", "Skoda", 2021, client1, "Uber");
 
-        TaxiCompany<Car> taxiCompany = new TaxiCompany<>();
-        taxiCompany.addTaxi(car1);
-        taxiCompany.addTaxi(car2);
-        taxiCompany.addTaxi(car3);
+        // Реєструємо таксі в сервісі (оскільки Taxi наслідує Car, метод працює коректно)
+        service.registerCar(taxi1);
+        service.registerCar(taxi2);
+        service.registerCar(taxi3);
 
-        ServiceOrder fleetOrder = new ServiceOrder(car1);
-        taxiCompany.addTaxisToOrder(fleetOrder, Arrays.asList(car2, car3));
+        TaxiCompany<Taxi> taxiCompany = new TaxiCompany<>();
+        taxiCompany.addTaxi(taxi1);
+        taxiCompany.addTaxi(taxi2);
+        taxiCompany.addTaxi(taxi3);
+
+        // Створюємо замовлення для першого таксі та додаємо туди інші
+        ServiceOrder fleetOrder = new ServiceOrder(taxi1);
+        taxiCompany.addTaxisToOrder(fleetOrder, Arrays.asList(taxi2, taxi3));
         service.registerServiceOrder(fleetOrder);
+
         System.out.println("Cars in the fleet order: " + fleetOrder.getCars().size());
         for (Car car : fleetOrder.getCars()) {
-            System.out.println(car.getBrand() + " " + car.getModel() + " (VIN: " + car.getVinCode() + ")");
+            if (car instanceof Taxi t) {
+                System.out.println(t.getBrand() + " " + t.getModel() + " (VIN: " + t.getVinCode() + ", Company: " + t.getCompanyName() + ")");
+            } else {
+                System.out.println(car.getBrand() + " " + car.getModel() + " (VIN: " + car.getVinCode() + ")");
+            }
         }
         System.out.println();
 
