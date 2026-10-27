@@ -163,7 +163,7 @@ public class CarServiceDemo {
         service.registerCar(taxi2);
         service.registerCar(taxi3);
 
-        TaxiCompany<Taxi> taxiCompany = new TaxiCompany<>();
+        TaxiCompany taxiCompany = new TaxiCompany();
         taxiCompany.addTaxi(taxi1);
         taxiCompany.addTaxi(taxi2);
         taxiCompany.addTaxi(taxi3);

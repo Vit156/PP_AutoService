@@ -32,7 +32,7 @@ public class Client {
     }
 
     public BigDecimal getLoyaltyDiscountPercentage() {
-        long discount = Math.min((completedRepairs / 3) * 3, 60);
+        long discount = Math.min((completedRepairs / 3) * 3, 60); // make consants
         return BigDecimal.valueOf(discount);
     }
 }

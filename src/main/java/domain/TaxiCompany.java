@@ -3,18 +3,18 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaxiCompany<T extends Taxi> {
-    private List<T> taxis;
+public class TaxiCompany {
+    private List<Taxi> taxis;
 
     public TaxiCompany() {
         this.taxis = new ArrayList<>();
     }
 
-    public void addTaxi(T taxi) {
+    public void addTaxi(Taxi taxi) {
         if (taxi == null) {
             throw new IllegalArgumentException("Taxi cannot be null");
         }
-        for (T registeredTaxi : this.taxis) {
+        for (var registeredTaxi : this.taxis) {
             if (registeredTaxi.getVinCode().equals(taxi.getVinCode())) {
                 throw new IllegalStateException("Taxi already registered");
             }
@@ -22,7 +22,7 @@ public class TaxiCompany<T extends Taxi> {
         this.taxis.add(taxi);
     }
 
-    public void removeTaxi(T taxi) {
+    public void removeTaxi(Taxi taxi) {
         if (taxi == null) {
             throw new IllegalArgumentException("Taxi cannot be null");
         }
@@ -37,19 +37,19 @@ public class TaxiCompany<T extends Taxi> {
             return;
         }
         System.out.println("Registered Taxis:");
-        for (T taxi : this.taxis) {
+        for (Taxi taxi : this.taxis) {
             System.out.println("VIN: " + taxi.getVinCode() + ", Company: " + taxi.getCompanyName());
         }
     }
 
-    public void addTaxisToOrder(ServiceOrder order, List<? extends T> taxisToAdd) {
+    public void addTaxisToOrder(ServiceOrder order, List<? extends Taxi> taxisToAdd) {
         if (order == null) {
             throw new IllegalArgumentException("Service order cannot be null");
         }
         if (taxisToAdd == null || taxisToAdd.isEmpty()) {
             throw new IllegalArgumentException("Taxi list cannot be null or empty");
         }
-        for (T taxi : taxisToAdd) {
+        for (Taxi taxi : taxisToAdd) {
             if (taxi == null) {
                 throw new IllegalArgumentException("Taxi cannot be null");
             }
@@ -57,6 +57,6 @@ public class TaxiCompany<T extends Taxi> {
                 throw new IllegalStateException("Taxi with VIN " + taxi.getVinCode() + " does not belong to the company");
             }
         }
-        order.addCars(new ArrayList<>(taxisToAdd));
+        order.addCars(new ArrayList<Car>(taxisToAdd));
     }
 }

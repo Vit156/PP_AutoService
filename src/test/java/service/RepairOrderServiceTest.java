@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import domain.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,8 +31,12 @@ class RepairOrderServiceTest {
     @Mock
     private PriceCalculator priceCalculator;
 
-    @InjectMocks
     private RepairOrderService repairOrderService;
+
+     @BeforeEach
+     public void init(){
+         repairOrderService = new RepairOrderService(repairOrderRepository, priceCalculator);
+     }
 
     @Test
     void completeServiceOrder_orderExists_completesAndReturnsPrice() {
