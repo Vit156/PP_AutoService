@@ -74,10 +74,10 @@ public class RepairOrderService {
         ServiceOrder order = repairOrderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Service order not found: " + orderId));
 
-        for (Job job : jobs) {
+        jobs.forEach(job -> {
             order.addJob(job);
             repairOrderRepository.saveAndFlush(order);
-        }
+        });
     }
 
 }

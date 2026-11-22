@@ -199,13 +199,13 @@ public class CarServiceDemo implements CommandLineRunner {
         service.registerServiceOrder(fleetOrder);
 
         System.out.println("Cars in the fleet order: " + fleetOrder.getCars().size());
-        for (Car car : fleetOrder.getCars()) {
+        fleetOrder.getCars().forEach(car -> {
             if (car instanceof Taxi t) {
                 System.out.println(t.getBrand() + " " + t.getModel() + " (VIN: " + t.getVinCode() + ", Company: " + t.getCompanyName() + ")");
             } else {
                 System.out.println(car.getBrand() + " " + car.getModel() + " (VIN: " + car.getVinCode() + ")");
             }
-        }
+        });
         System.out.println();
 
         // ---------------------------------------------------------
@@ -214,9 +214,14 @@ public class CarServiceDemo implements CommandLineRunner {
         System.out.println("--- Scenario 11: Loading persisted orders from PostgreSQL ---");
         List<ServiceOrder> existingOrders = repairOrderService.getAllOrders();
         System.out.println("Previously saved orders in DB: " + existingOrders.size());
-        existingOrders.forEach(o -> System.out.println(
-                "Loaded Order #" + o.getId() + " | Status: " + o.getStatus() + " | Jobs count: " + o.getJobs().size()
-        ));
+
+        existingOrders.forEach(o -> {
+            String jobsInfo = o.getJobs().stream()
+                    .map(j -> j.getName() + " [" + j.getStatus() + "]")
+                    .toList()
+                    .toString();
+            System.out.println("Loaded Order #" + o.getId() + " | Status: " + o.getStatus() + " | Jobs: " + jobsInfo);
+        });
         System.out.println();
 
         // ---------------------------------------------------------
