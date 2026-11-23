@@ -5,8 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 
-import com.autoservice.domain.*;
-import com.autoservice.pricing.PriceCalculator;
+import com.autoservice.domain.Car;
+import com.autoservice.domain.Client;
+import com.autoservice.domain.Job;
+import com.autoservice.domain.ServiceOrder;
+import com.autoservice.domain.Specialization;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

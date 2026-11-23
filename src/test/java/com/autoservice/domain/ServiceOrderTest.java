@@ -5,9 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
-import java.util.Collections;
+import java.util.List;
 
-import com.autoservice.domain.*;
 import org.junit.jupiter.api.Test;
 
 class ServiceOrderTest {
@@ -97,7 +96,7 @@ class ServiceOrderTest {
         Job job = createJob();
         order.addJob(job);
         Mechanic mechanic = new Mechanic(2L, "Test domain.Mechanic",
-                Collections.singletonList(Specialization.BODYWORK_REPAIR));
+                List.of(Specialization.BODYWORK_REPAIR));
 
         // When
         IllegalStateException exception = assertThrows(
@@ -150,7 +149,7 @@ class ServiceOrderTest {
         order.diagnoseOrder();
         order.approveOrder();
         order.assignMechanic(new Mechanic(1L, "Test domain.Mechanic",
-                Collections.singletonList(Specialization.ENGINE_REPAIR)));
+                List.of(Specialization.ENGINE_REPAIR)));
         order.startProgress();
         return order;
     }

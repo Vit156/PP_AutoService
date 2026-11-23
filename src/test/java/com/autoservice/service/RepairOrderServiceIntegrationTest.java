@@ -19,7 +19,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -86,7 +86,7 @@ class RepairOrderServiceIntegrationTest {
         Client client = clientRepository.save(new Client("Completion Test Client"));
         Car car = carRepository.save(new Car("VIN-" + UUID.randomUUID(), "Camry", "Toyota", 2022, client));
         Mechanic mechanic = mechanicRepository.save(
-                new Mechanic("Test Mechanic", Collections.singletonList(Specialization.ENGINE_REPAIR))
+                new Mechanic("Test Mechanic", List.of(Specialization.ENGINE_REPAIR))
         );
 
         ServiceOrder order = new ServiceOrder(car);
@@ -161,9 +161,7 @@ class RepairOrderServiceIntegrationTest {
 
         CountDownLatch bothLoaded = new CountDownLatch(2);
         CountDownLatch tx1Committed = new CountDownLatch(1);
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-
-        try {
+        try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
             // When: TX-1 reads version 0 and commits first (version -> 1)
             Future<?> tx1 = executor.submit(() -> transactionTemplate.executeWithoutResult(status -> {
                 ServiceOrder order1 = repairOrderRepository.findById(orderId).orElseThrow();
@@ -209,7 +207,6 @@ class RepairOrderServiceIntegrationTest {
             assertEquals(OrderStatus.DIAGNOSED, reloaded.getStatus());
             assertEquals(1L, reloaded.getVersion());
         } finally {
-            executor.shutdown();
             repairOrderRepository.deleteById(orderId);
             carRepository.deleteById(car.getVinCode());
             clientRepository.deleteById(client.getId());

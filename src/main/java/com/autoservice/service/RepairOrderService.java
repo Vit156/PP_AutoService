@@ -74,10 +74,8 @@ public class RepairOrderService {
         ServiceOrder order = repairOrderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Service order not found: " + orderId));
 
-        jobs.forEach(job -> {
-            order.addJob(job);
-            repairOrderRepository.saveAndFlush(order);
-        });
+        jobs.forEach(order::addJob);
+        repairOrderRepository.saveAndFlush(order);
     }
 
 }

@@ -9,11 +9,16 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
-import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
-import com.autoservice.domain.*;
-import com.autoservice.service.RepairOrderService;
+import com.autoservice.domain.Car;
+import com.autoservice.domain.Client;
+import com.autoservice.domain.Job;
+import com.autoservice.domain.Mechanic;
+import com.autoservice.domain.OrderStatus;
+import com.autoservice.domain.ServiceOrder;
+import com.autoservice.domain.Specialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -115,7 +120,7 @@ class RepairOrderServiceTest {
         order.diagnoseOrder();
         order.approveOrder();
         order.assignMechanic(new Mechanic(1L, "Test domain.Mechanic",
-                Collections.singletonList(Specialization.ENGINE_REPAIR)));
+                List.of(Specialization.ENGINE_REPAIR)));
         order.startProgress();
         job.markCompleted();
         return order;

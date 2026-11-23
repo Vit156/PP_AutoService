@@ -1,6 +1,13 @@
 package com.autoservice.demo;
 
-import com.autoservice.domain.*;
+import com.autoservice.domain.Car;
+import com.autoservice.domain.Client;
+import com.autoservice.domain.Job;
+import com.autoservice.domain.Mechanic;
+import com.autoservice.domain.ServiceOrder;
+import com.autoservice.domain.Specialization;
+import com.autoservice.domain.Taxi;
+import com.autoservice.domain.TaxiCompany;
 import com.autoservice.repository.CarRepository;
 import com.autoservice.repository.ClientRepository;
 import com.autoservice.repository.MechanicRepository;
@@ -14,7 +21,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -55,8 +61,8 @@ public class CarServiceDemo implements CommandLineRunner {
         System.out.println("--- Scenario 1: Successful registration of client and car ---");
         Client client1 = new Client(1L, "Vitalik");
         Car car1 = new Car("VIN123456789", "Mustang", "Ford", 2021, client1);
-        Mechanic engineMechanic = new Mechanic(1L, "Taras", Collections.singletonList(Specialization.ENGINE_REPAIR));
-        Mechanic brakeMechanic = new Mechanic(2L, "Ivan", Collections.singletonList(Specialization.BRAKE_SYSTEM_REPAIR));
+        Mechanic engineMechanic = new Mechanic(1L, "Taras", List.of(Specialization.ENGINE_REPAIR));
+        Mechanic brakeMechanic = new Mechanic(2L, "Ivan", List.of(Specialization.BRAKE_SYSTEM_REPAIR));
         service.registerClient(client1);
         service.registerCar(car1);
         service.registerMechanic(engineMechanic);
@@ -215,12 +221,11 @@ public class CarServiceDemo implements CommandLineRunner {
         List<ServiceOrder> existingOrders = repairOrderService.getAllOrders();
         System.out.println("Previously saved orders in DB: " + existingOrders.size());
 
-        existingOrders.forEach(o -> {
-            String jobsInfo = o.getJobs().stream()
-                    .map(j -> j.getName() + " [" + j.getStatus() + "]")
-                    .toList()
-                    .toString();
-            System.out.println("Loaded Order #" + o.getId() + " | Status: " + o.getStatus() + " | Jobs: " + jobsInfo);
+        existingOrders.stream().forEach(o -> {
+            System.out.println("Loaded Order #" + o.getId() + " | Status: " + o.getStatus());
+            o.getJobs().stream()
+                    .map(j -> "  Loaded Job: " + j.getName() + " | Status: " + j.getStatus())
+                    .forEach(System.out::println);
         });
         System.out.println();
 
@@ -231,7 +236,7 @@ public class CarServiceDemo implements CommandLineRunner {
 
         Client dbClient = clientRepository.save(new Client("Vitalik (DB)"));
         Car dbCar = carRepository.save(new Car("VIN-DB-999", "Mustang", "Ford", 2021, dbClient));
-        Mechanic dbMechanic = mechanicRepository.save(new Mechanic("Petro", Collections.singletonList(Specialization.ENGINE_REPAIR)));
+        Mechanic dbMechanic = mechanicRepository.save(new Mechanic("Petro", List.of(Specialization.ENGINE_REPAIR)));
 
         ServiceOrder dbOrder = new ServiceOrder(dbCar);
         dbOrder.diagnoseOrder();
@@ -293,9 +298,7 @@ public class CarServiceDemo implements CommandLineRunner {
 
         CountDownLatch bothLoaded = new CountDownLatch(2);
         CountDownLatch tx1Committed = new CountDownLatch(1);
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-
-        try {
+        try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
             // Транзакція 1: читає замовлення (version = 0), проводить діагностику та комітить (version стає 1)
             Future<?> tx1 = executor.submit(() -> transactionTemplate.executeWithoutResult(status -> {
                 ServiceOrder orderInTx1 = repairOrderRepository.findById(lockOrderId).orElseThrow();
@@ -338,8 +341,6 @@ public class CarServiceDemo implements CommandLineRunner {
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        } finally {
-            executor.shutdown();
         }
 
         ServiceOrder finalLockState = repairOrderService.getOrderById(lockOrderId);
